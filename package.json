@@ -1,0 +1,17 @@
+{
+  "name": "undb",
+  "version": "0.0.0",
+  "description": "Serializable JSON db",
+  "main": "index.js",
+  "browser": "browser.js",
+  "repository": "laggingreflex/undb",
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "debounce": "^1.0.2",
+    "debug": "^2.6.8",
+    "localforage": "^1.5.0",
+    "proxy-observe": "^0.0.21"
+  }
+}
