@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Simple JSON in-memory auto-persistent database for server and client",
   "main": "index.js",
   "browser": "browser.js",
