@@ -1,7 +1,7 @@
-require('proxy-observe')
+require('proxy-observe');
 const debounce = require('debounce');
 
-module.exports = storage => (initial, opts) => {
+module.exports = storage => async(initial, opts) => {
   if (!opts) {
     opts = initial;
     initial = {};
@@ -15,26 +15,18 @@ module.exports = storage => (initial, opts) => {
   }
 
   opts.read = opts.read || storage.read;
-  // opts.read = (...args) => opts.read(...args, storage.read);
   opts.write = opts.write || storage.write;
-  // opts.write = (...args) => opts.write(...args, storage.write);
 
-  let db = opts.read(opts);
+  let db = await opts.read(opts);
+  let deepObserve;
 
-  let save = change => opts.write(db, opts);
-  if (opts.delay) {
-    save = debounce(save, typeof opts.delay === 'number' ? opts.delay : 1000);
+  let save = async change => {
+    if (opts.onChange) { await opts.onChange(deepObserve) }
+    await opts.write(db, opts);
+  }
+  if (opts.debounce) {
+    save = debounce(save, opts.debounce, false);
   }
 
-  if (db.then) {
-    return db.then(_db => {
-      db = _db;
-      db = Object.deepObserve(db, save);
-      return db;
-    });
-  } else {
-    db = Object.deepObserve(db, save);
-    return db;
-  }
-
+  return deepObserve = Object.deepObserve(db, save);
 }

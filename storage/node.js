@@ -1,32 +1,28 @@
-const fs = require('fs');
+const fs = require('mz/fs');
 const debug = require('debug')('undb:storage:node');
 
-const read = exports.read = opts => {
+exports.read = read;
+exports.write = write;
+
+let fd;
+
+async function read(opts) {
   if (!opts || !opts.path) {
     throw new Error('Need at least an opts.path');
   }
-  let str, json;
+  let str;
   try {
-    debug('Reading file', opts.path)
-    str = fs.readFileSync(opts.path, 'utf8');
+    str = (await fs.readFile(opts.path, 'utf8')) || '{}';
   } catch (error) {
-    console.warn(`WARN: Couldn't read database from file; using opts.initial. (${error.message})`);
-    const db = opts.initial;
-    opts.write(db, opts);
-    return db;
+    str = '{}';
   }
-  try {
-    debug('Parsing file', opts.path)
-    json = JSON.parse(str);
-    return json;
-  } catch (error) {
-    error.message = `Couldn't parse database from file. (${error.message})`;
-    throw error;
-  }
+  let db = JSON.parse(str);
+  db = Object.assign({}, opts.initial, db);
+  return (opts.write || write)(db, opts);
 }
 
 
-const write = exports.write = (db, opts) => {
+async function write(db, opts) {
   if (!db) {
     throw new Error('Need a db');
   }
@@ -34,10 +30,7 @@ const write = exports.write = (db, opts) => {
     throw new Error('Need at least an opts.path');
   }
   debug('Writing file', opts.path)
-  try {
-    fs.writeFileSync(opts.path, JSON.stringify(db));
-  } catch (error) {
-    error.message = `Couldn't write database to file. (${error.message})`;
-    throw error;
-  }
+  fd = fd || await fs.open(opts.path, 'w+');
+  await fs.writeFile(fd, JSON.stringify(db, null, 2));
+  return db;
 }

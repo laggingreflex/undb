@@ -1,17 +1,15 @@
 {
   "name": "undb",
   "version": "0.1.0",
-  "description": "Serializable JSON db",
+  "description": "Simple JSON in-memory auto-persistent database for server and client",
   "main": "index.js",
   "browser": "browser.js",
   "repository": "laggingreflex/undb",
-  "engines": {
-    "node": ">=6"
-  },
   "dependencies": {
     "debounce": "^1.0.2",
     "debug": "^2.6.8",
     "localforage": "^1.5.0",
+    "mz": "^2.7.0",
     "proxy-observe": "^0.0.21"
   }
 }
