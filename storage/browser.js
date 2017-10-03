@@ -34,6 +34,6 @@ async function write(db, opts) {
     throw new Error('Need at least an opts.path');
   }
   debug('Storing to localforage', opts.path)
-  await localforage.setItem(opts.path, db);
+  await localforage.setItem(opts.path, JSON.parse(JSON.stringify(db)));
   return db;
 }
