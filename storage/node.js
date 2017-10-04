@@ -4,8 +4,6 @@ const debug = require('debug')('undb:storage:node');
 exports.read = read;
 exports.write = write;
 
-let fd;
-
 async function read(opts) {
   if (!opts || !opts.path) {
     throw new Error('Need at least an opts.path');
@@ -30,7 +28,6 @@ async function write(db, opts) {
     throw new Error('Need at least an opts.path');
   }
   debug('Writing file', opts.path)
-  fd = fd || await fs.open(opts.path, 'w+');
-  await fs.writeFile(fd, JSON.stringify(db, null, 2));
+  await fs.writeFile(opts.path, JSON.stringify(db, null, 2));
   return db;
 }
