@@ -1,16 +1,15 @@
-const fs = require('mz/fs');
-const debug = require('debug')('undb:storage:node');
-
+const fs = require('fs');
 exports.read = read;
+
 exports.write = write;
 
-async function read(opts) {
+function read(opts) {
   if (!opts || !opts.path) {
     throw new Error('Need at least an opts.path');
   }
   let str;
   try {
-    str = (await fs.readFile(opts.path, 'utf8')) || '{}';
+    str = (fs.readFileSync(opts.path, 'utf8')) || '{}';
   } catch (error) {
     str = '{}';
   }
@@ -20,14 +19,13 @@ async function read(opts) {
 }
 
 
-async function write(db, opts) {
+function write(db, opts) {
   if (!db) {
     throw new Error('Need a db');
   }
   if (!opts || !opts.path) {
     throw new Error('Need at least an opts.path');
   }
-  debug('Writing file', opts.path)
-  await fs.writeFile(opts.path, JSON.stringify(db, null, 2));
+  fs.writeFileSync(opts.path, JSON.stringify(db, null, 2));
   return db;
 }
