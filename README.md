@@ -25,20 +25,18 @@ npm i undb
 ```js
 import undb from 'undb';
 
-undb({
+const db = undb({
   path: './store.json', /* in node */
   path: 'namespace',    /* in browser */
   initial: {
     something: false
   }
-}).then(db => {
-  db.something = 'true' // auto-saves
 })
 ```
 
 ## API
 
-`undb(options).then(db => {...})`
+`const db = undb(options)`
 
 * **`options`**
 
@@ -68,7 +66,8 @@ const render = (store) => {
   React.render(<App store={store}>, div);
 }
 
-undb({onChange: render}).then(render);
+const store = undb({onChange: render});
+render(store)
 ```
 
 ## Libraries used

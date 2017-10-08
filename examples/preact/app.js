@@ -14,7 +14,9 @@ const renderApp = store => {
   render(h(App, { store }), div, div.lastChild);
 };
 
-undb({
+const store = undb({
   path: 'v1',
   onChange: renderApp,
-}).then(renderApp);
+})
+
+renderApp(store);
