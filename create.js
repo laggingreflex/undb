@@ -6,9 +6,7 @@ module.exports = storage => (initial, opts) => {
     opts = initial;
     initial = {};
   }
-  if (!opts || !opts.path) {
-    throw new Error('Need at least an opts.path');
-  }
+
   initial = initial || opts.initial || {};
   if (!('delay' in opts)) {
     opts.delay = 1000;

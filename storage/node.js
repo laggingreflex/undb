@@ -3,10 +3,13 @@ exports.read = read;
 
 exports.write = write;
 
-function read(opts) {
-  if (!opts || !opts.path) {
-    throw new Error('Need at least an opts.path');
+function read(opts = {}) {
+  const initial = Object.assign({}, opts.initial);
+
+  if (!opts.path) {
+    return initial;
   }
+
   let str;
   try {
     str = (fs.readFileSync(opts.path, 'utf8')) || '{}';
@@ -19,12 +22,12 @@ function read(opts) {
 }
 
 
-function write(db, opts) {
+function write(db, opts = {}) {
   if (!db) {
     throw new Error('Need a db');
   }
-  if (!opts || !opts.path) {
-    throw new Error('Need at least an opts.path');
+  if (!opts.path) {
+    return;
   }
   fs.writeFileSync(opts.path, JSON.stringify(db, null, 2));
   return db;

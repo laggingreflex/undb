@@ -1,10 +1,14 @@
 exports.read = read;
 exports.write = write;
 
-function read(opts) {
-  if (!opts || !opts.path) {
-    throw new Error('Need at least an opts.path');
+function read(opts = {}) {
+
+  const initial = Object.assign({}, opts.initial);
+
+  if (!opts.path) {
+    return initial;
   }
+
   let db;
   try {
     db = JSON.parse(localStorage.getItem(opts.path) || '{}');
@@ -19,12 +23,12 @@ function read(opts) {
   return (opts.write || write)(db, opts);
 }
 
-function write(db, opts) {
+function write(db, opts = {}) {
   if (!db) {
     throw new Error('Need a db');
   }
-  if (!opts || !opts.path) {
-    throw new Error('Need at least an opts.path');
+  if (!opts.path) {
+    return;
   }
   localStorage.setItem(opts.path, JSON.stringify(db));
   return db;
