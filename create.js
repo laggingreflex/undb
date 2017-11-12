@@ -20,7 +20,7 @@ module.exports = storage => (initial, opts) => {
 
   let save = change => {
     if (opts.onChange) { opts.onChange(deepObserve) }
-    opts.write(db, opts);
+    opts.write(db, opts, storage.write);
   }
   if (opts.debounce) {
     save = debounce(save, opts.debounce, false);
