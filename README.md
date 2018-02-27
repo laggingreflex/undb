@@ -38,14 +38,43 @@ const db = undb({
 
 `const db = undb(options)`
 
+* **`db`** Deeply observed JS object that triggers auto-save feature when modified
+
 * **`options`**
 
   * **`path`** `[string]` Path to use for persistence. Should be a filename on server, and a "namespace" on client.
   * **`initial`** `[object]` Initial database structure
+
   * **`onChange`** `[function]` Function called whenever database changes
+
+    ```js
+    (db) => {...}
+    ```
+
   * **`debounce`** `[number]` [Debounce] `onChange`
 
-* **`db`** Deeply observed js object that triggers auto-save feature when modified
+  * **`read`** `[function]` Intercept the read function. E.g. to modify data before initializing (as the deeply observed JS object).
+
+    ```js
+    (opts, defaultRead) => { return {...} }
+    ```
+
+    * **`opts`** `[object]` Originally passed options
+    * **`defaultRead`** `[function]` The default reader function.
+
+      Must **return** a plain data object which will be initialized as the deeply observed JS object.
+
+  * **`write`** `[function]` Intercept the write function. E.g. to modify data before saving.
+
+    ```js
+    (db, opts, defaultWrite) => { }
+    ```
+
+    * **`db`** `[object]` The deeply observed JS object
+    * **`opts`** `[object]` Originally passed options
+    * **`defaultWrite`** `[function]` The default writer function.
+
+      If you choose not to use `defaultWrite` you **must** save the data manually.
 
 
 ## Examples
