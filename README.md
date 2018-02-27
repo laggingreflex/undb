@@ -70,14 +70,16 @@ const store = undb({onChange: render});
 render(store)
 ```
 
+## Similar projects
+
+* [react-easy-state](https://github.com/solkimicreb/react-easy-state)
+
 ## Libraries used
 
 * **[proxy-observe]**
-* **[localforage]**
 * **[debounce]**
 
 [proxy-observe]: https://github.com/anywhichway/proxy-observe
-[localforage]: https://github.com/localForage/localForage
 [debounce]: https://github.com/component/debounce
 
 [ES Proxy]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Proxy
