@@ -21,6 +21,7 @@ function read(opts = {}) {
   }
   db = Object.assign({}, opts.initial, db);
   return (opts.write || write)(db, opts, write);
+  // return (opts.write || write)(db, opts, (_db = db, _opts = opts) => write(_db, _opts));
 }
 
 function write(db, opts = {}) {
