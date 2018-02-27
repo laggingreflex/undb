@@ -15,7 +15,7 @@ module.exports = storage => (initial, opts) => {
   opts.read = opts.read || storage.read;
   opts.write = opts.write || storage.write;
 
-  let db = opts.read(opts);
+  let db = opts.read(opts, storage.read);
   let deepObserve;
 
   let save = change => {

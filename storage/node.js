@@ -18,7 +18,7 @@ function read(opts = {}) {
   }
   let db = JSON.parse(str);
   db = Object.assign({}, opts.initial, db);
-  return (opts.write || write)(db, opts);
+  return (opts.write || write)(db, opts, write);
 }
 
 
