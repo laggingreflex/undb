@@ -67,7 +67,7 @@ const db = undb({
   * **`write`** `[function]` Intercept the write function. E.g. to modify data before saving.
 
     ```js
-    (db, opts, defaultWrite) => { }
+    (db, opts, defaultWrite) => { /* ...write */ return db }
     ```
 
     * **`db`** `[object]` The deeply observed JS object
@@ -76,10 +76,12 @@ const db = undb({
 
       If you choose not to use `defaultWrite` you **must** save the data manually.
 
+      Must **return** back the original `db` object (the first argument)
+
 
 ## Examples
 
-Using as a store in a React app
+Using as a store in a React app:
 
 ```js
 import React from 'react';
@@ -98,6 +100,50 @@ const render = (store) => {
 const store = undb({onChange: render});
 render(store)
 ```
+
+Intercepting default read/write functions:
+
+```js
+import undb from 'undb';
+
+const db = undb({
+  initial: {store: {}, state: {}},
+
+  read: (opts, read) => {
+
+    // read the original DB using the default reader function
+    const db = read(opts);
+
+    // attach a custom method
+    db.validate = () = {
+      if (db.store.user && !db.store.user.name) {
+        throw new Error('Invalid data structure');
+      }
+    };
+
+    // return the modified db object
+    return db;
+  },
+
+  write: (db, opts, write) => {
+
+    // Convert the deeply observed JS object into plain JS object
+    const data = JSON.parse(JSON.stringify(db));
+    // This also removes the "validate" function attached above
+
+    // Perform custom operations on data
+    data.state = {}; // don't wanna save "state"
+
+    // write the data using the default writer function
+    write(data, opts);
+
+    // return the original db
+    return db;
+  },
+});
+```
+
+
 
 ## Similar projects
 
