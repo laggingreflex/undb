@@ -8,11 +8,10 @@ Simple JSON in-memory auto-persistent database for server and client.
 
 * Simple JS object, no extraneous API
 * Auto-persisted using [proxy-observe]
-* Saves to a json file on server, and uses [localforage] in browser
+* Saves to a json file on server, and uses **[localStorage]** in browser
 * `onChange` callback to re-render your app
 
 <small>**Note: Uses ES6 features ([Proxy][proxy-support]), use only where browser/env supports it.** </small>
-
 
 ## Install
 
@@ -159,3 +158,4 @@ const db = undb({
 
 [ES Proxy]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 [proxy-support]: http://caniuse.com/proxy
+[localStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
