@@ -144,9 +144,11 @@ const db = undb({
 
 
 
-## Similar projects
+## Similar libraries
 
-* [react-easy-state](https://github.com/solkimicreb/react-easy-state)
+* https://github.com/sindresorhus/on-change
+* https://github.com/solkimicreb/react-easy-state
+* https://github.com/nx-js/observer-util
 
 ## Libraries used
 
