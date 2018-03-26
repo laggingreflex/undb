@@ -7,7 +7,7 @@ Simple JSON in-memory auto-persistent database for server and client.
 ## Features
 
 * Simple JS object, no extraneous API
-* Auto-persisted using [proxy-observe]
+* Auto-persisted using **[on-change]**
 * Saves to a json file on server, and uses **[localStorage]** in browser
 * `onChange` callback to re-render your app
 
@@ -80,7 +80,7 @@ const db = undb({
 
 ## Examples
 
-Using as a store in a React app:
+### Using as a store in a React app:
 
 ```js
 import React from 'react';
@@ -100,7 +100,7 @@ const store = undb({onChange: render});
 render(store)
 ```
 
-Intercepting default read/write functions:
+### Implement a `state` property which doesn't get saved, and attach a method by intercepting read/write functions:
 
 ```js
 import undb from 'undb';
@@ -142,21 +142,22 @@ const db = undb({
 });
 ```
 
-
-
 ## Similar libraries
 
-* https://github.com/sindresorhus/on-change
-* https://github.com/solkimicreb/react-easy-state
-* https://github.com/nx-js/observer-util
+* [sindresorhus/on-change](https://github.com/sindresorhus/on-change)
+* [anywhichway/proxy-observe](https://github.com/anywhichway/proxy-observe)
+* [solkimicreb/react-easy-state](https://github.com/solkimicreb/react-easy-state)
+* [nx-js/observer-util](https://github.com/nx-js/observer-util)
 
 ## Libraries used
 
-* **[proxy-observe]**
+* **[on-change]**
 * **[debounce]**
+* **[ority]**
 
-[proxy-observe]: https://github.com/anywhichway/proxy-observe
+[on-change]: https://github.com/sindresorhus/on-change
 [debounce]: https://github.com/component/debounce
+[ority]: https://github.com/laggingreflex/ority
 
 [ES Proxy]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 [proxy-support]: http://caniuse.com/proxy
