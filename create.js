@@ -24,8 +24,9 @@ module.exports = storage => (opts) => {
   let watched;
 
   let save = change => {
-    if (opts.onChange) { opts.onChange(watched) }
+    opts.onChange(watched)
     opts.write(db, opts, storage.write);
+    return watched;
   }
   if (opts.debounce) {
     save = debounce(save, opts.debounce, false);
@@ -33,5 +34,7 @@ module.exports = storage => (opts) => {
 
   watched = onChange(db, save);
 
-  if (opts.onChange) { opts.onChange(watched) }
-}
+  opts.onChange(watched);
+
+  return watched;
+};
