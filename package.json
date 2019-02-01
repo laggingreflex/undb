@@ -9,9 +9,5 @@
     "debounce": "^1.0.2",
     "on-change": "^0.1.0",
     "ority": "^0.5.0"
-  },
-  "peerDependencies": {
-    "preact": "*",
-    "react": "*"
   }
 }

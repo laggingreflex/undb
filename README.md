@@ -141,21 +141,6 @@ const db = undb({
   },
 });
 ```
-### Contextual Component
-
-Use as a component and access `this.context.db` from every child component
-
-```js
-import h form 'preact';
-import undb form 'undb/preact';
-
-<undb ...props>
-  <div>
-    {this.context.db.name}
-  </div>
-</undb>
-
-```
 
 ## Similar libraries
 
