@@ -148,14 +148,8 @@ const db = undb({
 * [anywhichway/proxy-observe](https://github.com/anywhichway/proxy-observe)
 * [solkimicreb/react-easy-state](https://github.com/solkimicreb/react-easy-state)
 * [nx-js/observer-util](https://github.com/nx-js/observer-util)
+* [mobx](https://github.com/mobxjs/mobx)
 
-## Libraries used
-
-* **[on-change]**
-* **[debounce]**
-
-[on-change]: https://github.com/sindresorhus/on-change
-[debounce]: https://github.com/component/debounce
 
 [ES Proxy]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 [proxy-support]: http://caniuse.com/proxy
