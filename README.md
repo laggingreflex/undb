@@ -153,11 +153,9 @@ const db = undb({
 
 * **[on-change]**
 * **[debounce]**
-* **[ority]**
 
 [on-change]: https://github.com/sindresorhus/on-change
 [debounce]: https://github.com/component/debounce
-[ority]: https://github.com/laggingreflex/ority
 
 [ES Proxy]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 [proxy-support]: http://caniuse.com/proxy

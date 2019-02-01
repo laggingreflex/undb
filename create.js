@@ -1,24 +1,13 @@
 const onChange = require('on-change');
 const debounce = require('debounce');
-const ority = require('ority');
 
-module.exports = storage => (...args) => {
+module.exports = storage => (opts) => {
 
-  let opts = ority(args, [{
-    opts: 'object',
-  }, {
-    initial: 'object',
-    onChange: 'function',
-  }, {
-    opts: 'object',
-    onChange: 'function',
-  }, {
-    onChange: 'function',
-  }]);
-
-  if (opts.opts) {
-    opts = Object.assign(opts, opts.opts);
+  if (typeof opts === 'function') {
+    opts = { onChange: opts }
   }
+
+  if (!opts.onChange) throw new Error('Need an onChange function');
 
   if (!opts.initial) {
     opts.initial = {};
