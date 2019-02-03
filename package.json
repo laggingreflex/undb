@@ -3,10 +3,20 @@
   "version": "0.7.0",
   "description": "Simple JSON in-memory auto-persistent database for server and client",
   "main": "index.js",
-  "browser": "browser.js",
+  "browser": "lib/browser.js",
   "repository": "laggingreflex/undb",
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "debounce": "^1.0.2",
     "on-change": "^0.1.0"
+  },
+  "peerDependencies": {
+    "preact": "*",
+    "react": "*"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }

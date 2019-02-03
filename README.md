@@ -1,6 +1,4 @@
-# undb
-
-[![npm](https://img.shields.io/npm/v/undb.svg)](https://www.npmjs.com/package/undb)
+# undb [![npm-shield]][npm]
 
 Simple JSON in-memory auto-persistent database for server and client.
 
@@ -9,9 +7,11 @@ Simple JSON in-memory auto-persistent database for server and client.
 * Simple JS object, no extraneous API
 * Auto-persisted using **[on-change]**
 * Saves to a json file on server, and uses **[localStorage]** in browser
-* `onChange` callback to re-render your app
+* Works in browser, with React or Preact, or without
 
-<small>**Note: Uses ES6 features ([Proxy][proxy-support]), use only where browser/env supports it.** </small>
+<small>Note: Uses ES6 features ([Proxy][proxy-support]), use only where browser/env supports it</small>
+
+<small>**Note: API slightly changed from v0.8, please re-read the doc** </small>
 
 ## Install
 
@@ -22,135 +22,132 @@ npm i undb
 ## Usage
 
 ```js
-import undb from 'undb';
+const undb = require('undb')
 
-const db = undb({
+const [db, onChange] = undb({
   path: './store.json', /* in node */
   path: 'namespace',    /* in browser */
   initial: {
     something: false
   }
 })
+
+onChange(() => {
+  // Fires whenever db changes
+})
+
 ```
+
+
 
 ## API
 
-`const db = undb(options)`
+```js
+const undb = require('undb')
+const [db, onChange] = undb(options)
+```
 
 * **`db`** Deeply observed JS object that triggers auto-save feature when modified
 
+* **`onChange`** `[function]` Called whenever `db` changes
+
 * **`options`**
 
-  * **`path`** `[string]` Path to use for persistence. Should be a filename on server, and a "namespace" on client.
+  * **`path`** `[string]` Path to use for persistence. Should be a filename on server, or a "namespace" on client
+
   * **`initial`** `[object]` Initial database structure
-
-  * **`onChange`** `[function]` Function called whenever database changes
-
-    ```js
-    (db) => {...}
-    ```
 
   * **`debounce`** `[number]` [Debounce] `onChange`
 
-  * **`read`** `[function]` Intercept the read function. E.g. to modify data before initializing (as the deeply observed JS object).
+  * **`read`** `[defaultReader=>object]` Intercept the read function. Must return a data object
 
-    ```js
-    (opts, defaultRead) => { return {...} }
-    ```
+  * **`write`** `[defaultWriter=>{}]` Intercept the write function. Must call `defaultWriter`
 
-    * **`opts`** `[object]` Originally passed options
-    * **`defaultRead`** `[function]` The default reader function.
 
-      Must **return** a plain data object which will be initialized as the deeply observed JS object.
-
-  * **`write`** `[function]` Intercept the write function. E.g. to modify data before saving.
-
-    ```js
-    (db, opts, defaultWrite) => { /* ...write */ return db }
-    ```
-
-    * **`db`** `[object]` The deeply observed JS object
-    * **`opts`** `[object]` Originally passed options
-    * **`defaultWrite`** `[function]` The default writer function.
-
-      If you choose not to use `defaultWrite` you **must** save the data manually.
-
-      Must **return** back the original `db` object (the first argument)
+```jsx
+const connect = require('undb/react') // OR
+const connect = require('undb/preact')
+const ReactiveComponent = connect(onChange, <Component>)
+```
+* **`ReactiveComponent`** Component that re-renders `<Component>` whenever `onChange` is fired
 
 
 ## Examples
 
-### Using as a store in a React app:
+### Global persistent store
 
-```js
-import React from 'react';
-import undb from 'undb';
+**Note:** Re-renders entire React App
 
-const App = (props) => [
-  <h1>Hello {props.store.name}!</h1>,
-  <input onChange={e => props.store.name = e.target.value}>
-]
+* **`store.js`**
 
-const render = (store) => {
-  const div = document.getElementById('app');
-  React.render(<App store={store}>, div);
-}
+    ```js
+    const undb = require('undb')
 
-const store = undb({onChange: render});
-render(store)
-```
+    const [store, onChange] = undb({ path: 'my-app' })
 
-### Implement a `state` property which doesn't get saved, and attach a method by intercepting read/write functions:
+    exports.store = store
+    exports.onChange = onChange
+    ```
 
-```js
-import undb from 'undb';
+* **`components/App.js`**
 
-const db = undb({
-  initial: {store: {}, state: {}},
+    ```jsx
+    const { store } = require('../store')
 
-  read: (opts, read) => {
+    module.exports = () => [
+      <h1>Hello {store.name}!</h1>,
+      <input onChange={e => store.name = e.target.value}>
+    ]
+    ```
 
-    // read the original DB using the default reader function
-    const db = read(opts);
+* **`main.js`**
 
-    // attach a custom method
-    db.validate = () = {
-      if (db.store.user && !db.store.user.name) {
-        throw new Error('Invalid data structure');
-      }
-    };
+    ```jsx
+    const React = require('react')
+    const { onChange } = require('./store')
+    const App = require('./components/App')
 
-    // return the modified db object
-    return db;
-  },
+    onChange(() => React.render(<App>))
+    ```
 
-  write: (db, opts, write) => {
+### Local volatile state
 
-    // Convert the deeply observed JS object into plain JS object
-    const data = JSON.parse(JSON.stringify(db));
-    // This also removes the "validate" function attached above
+* **`components/App.js`**
 
-    // Perform custom operations on data
-    data.state = {}; // don't wanna save "state"
+    ```jsx
+    const undb = require('undb')
+    const connect = require('undb/react')
 
-    // write the data using the default writer function
-    write(data, opts);
+    const [state, onChange] = undb()
 
-    // return the original db
-    return db;
-  },
-});
-```
+    const App = () => [
+      <h1>Hello {state.name}!</h1>,
+      <input onInput={e => state.name = e.target.value}>
+    ]
+
+    module.exports = connect(onChange, App)
+    ```
+
+* **`main.js`**
+
+    ```jsx
+    const React = require('react')
+    const App = require('./components/App')
+
+    React.render(<App>)
+    ```
 
 ## Similar libraries
 
-* [sindresorhus/on-change](https://github.com/sindresorhus/on-change)
-* [anywhichway/proxy-observe](https://github.com/anywhichway/proxy-observe)
-* [solkimicreb/react-easy-state](https://github.com/solkimicreb/react-easy-state)
-* [nx-js/observer-util](https://github.com/nx-js/observer-util)
 * [mobx](https://github.com/mobxjs/mobx)
+* [react-easy-state](https://github.com/solkimicreb/react-easy-state)
 
 
 [ES Proxy]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 [proxy-support]: http://caniuse.com/proxy
 [localStorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+[on-change]: https://github.com/sindresorhus/on-change
+[debounce]: https://github.com/component/debounce
+
+[npm]: https://www.npmjs.com/package/undb
+[npm-shield]: https://img.shields.io/npm/v/undb.svg
