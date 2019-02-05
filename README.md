@@ -59,6 +59,8 @@ const [db, onChange] = undb(options)
 
   * **`debounce`** `[number]` [Debounce] `onChange`
 
+  * **`before`** `[boolean]` Make `onChange` fire *before* the value has been updated in `db`
+
   * **`read`** `[defaultReader=>object]` Intercept the read function. Must return a data object
 
   * **`write`** `[defaultWriter=>{}]` Intercept the write function. Must call `defaultWriter`
