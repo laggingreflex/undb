@@ -69,7 +69,7 @@ const [db, onChange] = undb(options)
 ```jsx
 const connect = require('undb/react') // OR
 const connect = require('undb/preact')
-const ReactiveComponent = connect(onChange, <Component>)
+const ReactiveComponent = connect(onChange)(<Component>)
 ```
 * **`ReactiveComponent`** Component that re-renders `<Component>` whenever `onChange` is fired
 
@@ -127,7 +127,7 @@ const ReactiveComponent = connect(onChange, <Component>)
       <input onInput={e => state.name = e.target.value}>
     ]
 
-    module.exports = connect(onChange, App)
+    module.exports = connect(onChange)(App)
     ```
 
 * **`main.js`**
