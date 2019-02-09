@@ -4,7 +4,7 @@ const undb = require('.');
 exports.useState = (opts = {}) => {
   const [initial, update] = useState(opts.initial);
   const [state, onChange] = undb({ ...opts, initial });
-  onChange(() => update(state));
+  onChange(() => update(JSON.parse(JSON.stringify(state))));
   return state;
 
   // /* Using `useRef` for it to not use `undb({ initial })` */
