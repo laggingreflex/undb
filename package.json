@@ -3,7 +3,7 @@
   "version": "0.10.0",
   "description": "Simple JSON in-memory auto-persistent database for server and client",
   "main": "index.js",
-  "browser": "lib/browser.js",
+  "browser": "browser/index.js",
   "repository": "laggingreflex/undb",
   "scripts": {
     "test": "mocha"

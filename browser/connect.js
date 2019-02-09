@@ -1,4 +1,6 @@
-module.exports = (onChange, { Component, createElement, h = createElement, ...opts }) => component => class extends Component {
+const { Component, createElement: h, } = require('react');
+
+module.exports = (onChange, opts = {}) => component => class extends Component {
   render() {
     return h(component, this.props, this.children);
   }

@@ -1,6 +1,7 @@
-const undb = require('../browser');
+const { useState } = require('react');
+const undb = require('.');
 
-module.exports = ({ useState, useRef }) => (opts = {}) => {
+exports.useState = (opts = {}) => {
   const [initial, update] = useState(opts.initial);
   const [state, onChange] = undb({ ...opts, initial });
   onChange(() => update(state));
@@ -12,4 +13,4 @@ module.exports = ({ useState, useRef }) => (opts = {}) => {
   // const [, update] = useState();
   // onChange(() => update(state))
   // return state;
-}
+};
