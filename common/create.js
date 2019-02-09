@@ -34,7 +34,7 @@ module.exports = storage => (opts) => {
 
   let save = () => {
     if (listeners.size) {
-      listeners.forEach(onChange => onChange(watched));
+      listeners.forEach(onChange => onChange(watched, onChange.length > 1 && JSON.parse(JSON.stringify(watched))));
     } else {
       if (!opts.silent) console.warn('[undb] State change occurred but no onChange listeners were found');
     }
