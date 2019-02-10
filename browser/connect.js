@@ -2,7 +2,8 @@ const { Component, createElement: h, } = require('react');
 
 module.exports = (onChange, opts = {}) => component => class extends Component {
   render() {
-    return h(component, this.props, this.children);
+    const children = Array.isArray(this.children) ? this.children : typeof this.children === 'undefined' ? [] : [this.children];
+    return h(component, this.props, ...children);
   }
   componentDidMount() {
     if (opts.sync) {
