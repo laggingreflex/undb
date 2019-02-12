@@ -9,11 +9,10 @@
     "test": "mocha"
   },
   "dependencies": {
-    "debounce": "^1.0.2",
-    "on-change": "^0.1.0"
+    "on-change": "^1.0.0",
+    "throttle-debounce": "^2.1.0"
   },
   "peerDependencies": {
-    "preact": "*",
     "react": "*"
   },
   "devDependencies": {

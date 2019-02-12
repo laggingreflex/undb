@@ -1,5 +1,5 @@
 const onChange = require('on-change');
-const debounce = require('debounce');
+const { throttle, debounce } = require('throttle-debounce');
 
 module.exports = storage => (opts) => {
 
@@ -41,7 +41,9 @@ module.exports = storage => (opts) => {
     return write() || watched;
   }
   if (opts.debounce) {
-    save = debounce(save, opts.debounce, false);
+    save = debounce(opts.debounce, save);
+  } else if (opts.throttle) {
+    save = throttle(opts.throttle, save);
   }
   if (!opts.before) {
     save = setTimeout.bind(null, save);
