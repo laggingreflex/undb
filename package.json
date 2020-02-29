@@ -9,7 +9,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "on-change": "^1.0.0",
+    "on-change": "^1.6.4",
     "throttle-debounce": "^2.1.0"
   },
   "peerDependencies": {
