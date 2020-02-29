@@ -7,9 +7,9 @@ module.exports = (onChange, opts = {}) => component => class extends Component {
   }
   componentDidMount() {
     if (opts.sync) {
-      this.removeOnChange = onChange(this.setState);
+      this.removeOnChange = onChange(() => this.setState({}));
     } else {
-      this.removeOnChange = onChange((s, state) => setTimeout(() => this.setState(state)));
+      this.removeOnChange = onChange((s, state) => setTimeout(() => this.setState({})));
     }
   }
   componentWillUnmount() {
