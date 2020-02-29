@@ -38,6 +38,8 @@ onChange(() => {
 
 ## API
 
+### `undb`
+
 ```js
 const undb = require('undb')
 
@@ -61,6 +63,33 @@ const [db, onChange] = undb(options)
   * **`read`** `[fn=>obj]` Intercept the read function. Must return a data object. `fn` is the default read function
 
   * **`write`** `[cb=>null]` Intercept the write function. Must call `cb`
+
+### `link`
+
+
+```js
+const { link } = require('undb/common/utils')
+const state1Tuple = undb(options)
+const state2Tuple = undb(options)
+link(state1Tuple, state2Tuple);
+```
+
+```js
+const { link } = require('undb/common/utils')
+const [ state1, state2 ] = link({}, {});
+```
+
+```js
+const [state1, onChange, link] = undb(options)
+const [state2] = link({})
+```
+
+* **`link`** `[fn]` Link 2 or more states. Changing one will change the other(s).
+
+    * **`@param {...[state, onChange]|initial}`** Takes either the `[state, onChange]` tuple or an `initial` object to create a new reactive state object from.
+
+    * **`@returns state[]`** Returns an array corresponding to the input arguments, each item either being the input `[state]` (from the tuple) or a newly created one.
+
 
 ### Browser specific
 

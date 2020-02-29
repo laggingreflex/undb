@@ -1,5 +1,4 @@
-const onChange = require('on-change');
-const { throttle, debounce } = require('throttle-debounce');
+const _ = require('./utils');
 
 module.exports = storage => (opts) => {
 
@@ -32,27 +31,36 @@ module.exports = storage => (opts) => {
     return (opts.write || (write => write()))((modified, opts) => storage.write(modified || watched, modifyOpts(opts)));
   };
 
-  let save = () => {
+  let save = (...args) => {
     if (listeners.size) {
-      listeners.forEach(onChange => onChange(watched, onChange.length > 1 && JSON.parse(JSON.stringify(watched))));
+      // listeners.forEach(onChange => onChange(watched, onChange.length > 1 && JSON.parse(JSON.stringify(watched))));
+      listeners.forEach(onChange => onChange(...args));
     } else {
       if (!opts.silent) console.warn('[undb] State change occurred but no onChange listeners were found');
     }
     return write() || watched;
   }
   if (opts.debounce) {
-    save = debounce(opts.debounce, save);
+    save = _.debounce(opts.debounce, save);
   } else if (opts.throttle) {
-    save = throttle(opts.throttle, save);
+    save = _.throttle(opts.throttle, save);
   }
   if (!opts.before) {
-    save = setTimeout.bind(null, save);
+    save = (save => (...args) => setTimeout(save, 0, ...args))(save);
   }
 
-  watched = onChange(read(), save);
+  let addListener;
+  [watched, addListener] = _.onChange(read());
+  addListener(save);
 
-  return [watched, onChange => {
+  function link(...rest) {
+    return _.link([watched, onChange], ...rest);
+  }
+
+  function onChange(onChange) {
     listeners.add(onChange);
     return () => listeners.delete(onChange);
-  }];
+  }
+
+  return [watched, onChange, link];
 };
