@@ -1,4 +1,5 @@
 const fs = require('fs');
+const _ = require('./utils');
 
 exports.read = read;
 exports.write = write;
@@ -10,9 +11,11 @@ function read(opts = {}) {
     return initial;
   }
 
+  const path = _.normalize(opts.path);
+
   let str;
   try {
-    str = (fs.readFileSync(opts.path, 'utf8')) || '{}';
+    str = (fs.readFileSync(path, 'utf8')) || '{}';
   } catch (error) {
     str = '{}';
   }
@@ -29,6 +32,8 @@ function write(db, opts = {}) {
   if (!opts.path) {
     return;
   }
-  fs.writeFileSync(opts.path, JSON.stringify(db, null, 2));
+  const path = _.normalize(opts.path);
+  _.ensureBaseDir(path);
+  fs.writeFileSync(path, JSON.stringify(db, null, 2));
   return db;
 }
