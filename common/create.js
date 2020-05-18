@@ -1,6 +1,18 @@
 const _ = require('./utils');
 
-module.exports = storage => (opts) => {
+/**
+ * @typedef undbOpts
+ * @property {String} [path] Path used to persist the state
+ * @property {Function} [onChange] Function that gets called when state changes
+ * @property {Object} [initial] Initial state (overwritten by persisted)
+ * @property {Boolean|Function} [read] Whether to, or a custom function to retrieve the persisted state
+ * @property {Boolean|Function} [write] Whether to, or a custom function to persist the state
+ * @property {Boolean|Number} [debounce] Debounce calling onChange
+ * @property {Boolean|Number} [throttle] Throttle calling onChange
+ * @property {Boolean} [before] Whether to call the onChange before or after (default) updating the state
+ */
+
+module.exports = storage => (/** @type undbOpts */ opts) => {
 
   const listeners = new Set;
 
