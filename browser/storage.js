@@ -22,9 +22,12 @@ function read(opts = {}) {
   db = Object.assign({}, opts.initial, db);
 
   if (opts.clear) {
+    const keysToDelete = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key === opts.path) continue;
+      if (key !== opts.path) keysToDelete.push((key));
+    }
+    for(const key of keysToDelete) {
       localStorage.removeItem(key);
     }
   }
