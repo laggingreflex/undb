@@ -20,6 +20,15 @@ function read(opts = {}) {
     db = opts.initial || {};
   }
   db = Object.assign({}, opts.initial, db);
+
+  if (opts.clear) {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key === opts.path) continue;
+      localStorage.removeItem(key);
+    }
+  }
+
   return (opts.write || write)(db, opts, write);
   // return (opts.write || write)(db, opts, (_db = db, _opts = opts) => write(_db, _opts));
 }

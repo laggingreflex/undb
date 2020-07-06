@@ -56,6 +56,8 @@ const [db, onChange] = undb(options)
 
   * **`initial`** `[obj]` Initial database structure
 
+  * **`clear`** `[bool]` **Deletes** all localstorage items except current path
+
   * **`debounce`** `[num]` [Debounce] `onChange`
 
   * **`before`** `[bool]` Make `onChange` fire *before* the value has been updated in `db`
