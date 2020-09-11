@@ -115,7 +115,16 @@ const { useState } = require('undb/browser/hooks')
 const state = useState({ counter: 0 })
 ```
 
+#### `createUseState`
 
+* **`createUseState`** `[fn=>fn]` Create a `useState` hook for existing `state`
+
+```jsx
+const { createUseState } = require('undb/browser/hooks')
+
+const [state, onChange] = undb(options)
+const useState = createUseState(onChange)
+```
 
 ## Examples
 

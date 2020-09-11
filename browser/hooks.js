@@ -1,4 +1,4 @@
-const { useState } = require('react');
+const { useState, useEffect } = require('react');
 const undb = require('.');
 
 exports.useState = (opts = {}) => {
@@ -14,3 +14,19 @@ exports.useState = (opts = {}) => {
   // onChange(() => update(state))
   // return state;
 };
+
+exports.createUseState = (onChange, opts = {}) => {
+  const updates = new Set;
+  onChange(() => {
+    for (const update of updates) {
+      update(Math.random());
+    }
+  });
+  return () => {
+    const [, update] = useState();
+    useEffect(() => {
+      updates.add(update);
+      return () => updates.delete(update);
+    });
+  }
+}
