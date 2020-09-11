@@ -97,17 +97,17 @@ const [state2] = link({})
 
 #### `connect`
 
+* **`connect`** `[fn=>fn=>Component]` Connects the **`onChange`** to a `<Component>` so that it re-renders whenever `onChange` is fired
+
 ```jsx
 const connect = require('undb/browser/connect')
 
 const ReactiveComponent = connect(onChange)(<Component>)
 ```
 
-* **`connect`** `[fn=>fn=>Component]` Connects the **`onChange`** to a `<Component>` so that it re-renders whenever `onChange` is fired
-
 #### `useState`
 
-Requires React >= v16.8
+* **`useState`** `[obj=>obj]` [React State Hook][hooks-state] alternative that updates when `state` object is modified
 
 ```jsx
 const { useState } = require('undb/browser/hooks')
@@ -115,7 +115,6 @@ const { useState } = require('undb/browser/hooks')
 const state = useState({ counter: 0 })
 ```
 
-* **`useState`** `[obj=>obj]` [React State Hook][hooks-state] alternative that updates when `state` object is modified
 
 
 ## Examples
@@ -202,6 +201,7 @@ const state = useState({ counter: 0 })
 
 ## Similar libraries
 
+* [unurl](https://github.com/laggingreflex/unurl)
 * [mobx](https://github.com/mobxjs/mobx)
 * [react-easy-state](https://github.com/solkimicreb/react-easy-state)
 
