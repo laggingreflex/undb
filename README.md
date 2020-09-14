@@ -66,6 +66,8 @@ const [db, onChange] = undb(options)
 
   * **`write`** `[cb=>null]` Intercept the write function. Must call `cb`
 
+  * **`onChange`** `[obj]` Options passed to [on-change]
+
 ### `link`
 
 

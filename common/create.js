@@ -62,7 +62,7 @@ module.exports = storage => (/** @type undbOpts */ opts) => {
   }
 
   let addListener;
-  [watched, addListener] = _.onChange(read());
+  [watched, addListener] = _.onChange(read(), opts.onChange);
   addListener(save);
 
   function link(...rest) {

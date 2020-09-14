@@ -30,13 +30,13 @@ function link(...inputs) {
 }
 
 
-function onChange(initial) {
+function onChange(initial, opts = {}) {
   const callbacks = new Set;
   const watched = _onChange(initial, (path, value, previousValue) => {
     for (const cb of callbacks) {
       cb(path, value, previousValue);
     }
-  })
+  }, opts)
 
   function addListener(cb) {
     callbacks.add(cb);
