@@ -1,8 +1,10 @@
-const { useState, useEffect } = require('react');
+const React = require('react');
 const undb = require('.');
 
-exports.useState = (opts = {}) => {
-  const [initial, update] = useState(opts.initial);
+module.exports = { useState, createUseState };
+
+function useState(opts = {}) {
+  const [initial, update] = React.useState(opts.initial);
   const [state, onChange] = undb({ ...opts, initial });
   onChange(() => update(JSON.parse(JSON.stringify(state))));
   return state;
@@ -15,7 +17,7 @@ exports.useState = (opts = {}) => {
   // return state;
 };
 
-exports.createUseState = (onChange, opts = {}) => {
+function createUseState(onChange, opts = {}) {
   const updates = new Set;
   onChange(() => {
     for (const update of updates) {
@@ -23,8 +25,8 @@ exports.createUseState = (onChange, opts = {}) => {
     }
   });
   return () => {
-    const [, update] = useState();
-    useEffect(() => {
+    const [, update] = React.useState();
+    React.useEffect(() => {
       updates.add(update);
       return () => updates.delete(update);
     });
