@@ -22,7 +22,7 @@ module.exports = storage => (/** @type undbOpts */ opts) => {
 
   if (!opts) opts = {};
 
-  if (opts.onChange) {
+  if (typeof opts.onChange === 'function') {
     listeners.add(opts.onChange);
   }
 
