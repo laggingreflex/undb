@@ -5,16 +5,14 @@ module.exports = { useState, createUseState };
 
 function useState(opts = {}) {
   const [initial, update] = React.useState(opts.initial);
-  const [state, onChange] = undb({ ...opts, initial });
+  const ref = React.useRef();
+  if (!ref.current) {
+    const [state, onChange] = undb({ ...opts, initial });
+    ref.current = { state, onChange };
+  }
+  const { state, onChange } = ref.current
   onChange(() => update(JSON.parse(JSON.stringify(state))));
   return state;
-
-  // /* Using `useRef` for it to not use `undb({ initial })` */
-  // /* But this doesn't seem to be working right, has weird update issues... */
-  // const [state, onChange] = useRef(undb(opts)).current;
-  // const [, update] = useState();
-  // onChange(() => update(state))
-  // return state;
 };
 
 function createUseState(onChange, opts = {}) {
